@@ -1,22 +1,40 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-int menu_principal();
+typedef struct campo{
+    int aberto;
+    int bomba;
+    int perigo;
+} Campo;
+
+int menuPrincipal();
+void desenharCampo(Campo campo_minado[][10]);
 
 int main(void){
+
+    Campo campo_minado[10][10];
     int opcao;
-    opcao = menu_principal();
+    int i, j;
+    opcao = menuPrincipal();
+
     switch (opcao){
     case 1:
-        printf("Vamos jogar");
+        for(i=0; i<10; i++){
+            for(j=0; j<10; j++){
+                campo_minado[i][j].aberto = 0;
+                campo_minado[i][j].bomba = 0;
+                campo_minado[i][j].perigo = 0;
+            }
+        }
+        desenharCampo(campo_minado);
         break;
     case 2:
-        printf("Saindo...");
+        exit(0);
         break;
     }
 }
 
-int menu_principal(){
+int menuPrincipal(){
     int valid = 0;
     int opcao;
 
@@ -32,6 +50,30 @@ int menu_principal(){
         }
     }
     
-
     return opcao;
 }
+
+void desenharCampo(Campo campo_minado[][10]){
+    int i, j;
+    for(i=0; i<20; i++){
+        printf("--");
+    }
+    printf("\n");
+    for(i=0; i<10; i++){
+        for(j=0; j<10; j++){
+            printf("|");
+            if(campo_minado[i][j].aberto == 1){
+                printf("%d", campo_minado[i][j].perigo);
+            }
+            else{
+                printf(" * ");
+            }
+        }
+        printf("|");
+        printf("\n");
+    }
+    for(i=0; i<20; i++){
+        printf("--");
+    }
+}
+
