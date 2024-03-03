@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<time.h>
 
 typedef struct campo{
     int aberto;
@@ -15,6 +16,7 @@ int main(void){
     Campo campo_minado[10][10];
     int opcao;
     int i, j;
+    int eixo_bomba_x, eixo_bomba_y;
     opcao = menuPrincipal();
 
     switch (opcao){
@@ -26,6 +28,22 @@ int main(void){
                 campo_minado[i][j].perigo = 0;
             }
         }
+
+        srand(time(NULL));
+        for(i=0; i<10; i++){
+            eixo_bomba_x = rand() % 10;
+            eixo_bomba_y = rand() % 10;
+            campo_minado[eixo_bomba_x][eixo_bomba_y].bomba = 1;
+        }
+
+        for(i=0; i<10; i++){
+            for(j=0; j<10; j++){
+                if(campo_minado[i][j].bomba == 1){
+                    
+                }
+            }
+        }
+
         desenharCampo(campo_minado);
         break;
     case 2:
@@ -63,7 +81,7 @@ void desenharCampo(Campo campo_minado[][10]){
         for(j=0; j<10; j++){
             printf("|");
             if(campo_minado[i][j].aberto == 1){
-                printf("%d", campo_minado[i][j].perigo);
+                printf(" %d ", campo_minado[i][j].perigo);
             }
             else{
                 printf(" * ");
