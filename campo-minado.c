@@ -10,7 +10,6 @@ typedef struct field{
 } Field;
 
 int mainMenu();
-int auxiliaryMenu();
 void drawField(Field mine_field[][10]);
 void startField(Field (*mine_field)[10]);
 void addBombs(Field (*mine_field)[10]);
@@ -20,8 +19,7 @@ int isBombs(Field (*mine_field)[10], int eixo_x, int eixo_y);
 void openFields(Field (*mine_field)[10], int eixo_x, int eixo_y, int *vitoria);
 void addFlag(Field (*mine_field)[10], int eixo_x, int eixo_y);
 void removeFlag(Field (*mine_field)[10], int eixo_x, int eixo_y);
-
-void viewField(Field mine_field[][10]);
+void viewBombs(Field mine_field[][10]);
 
 
 int main(void){
@@ -34,6 +32,7 @@ int main(void){
     int game = 1;
     int play = 0;
 
+    printf("\nBem-vindo ao jogo Campo Minado.\n");
     option = mainMenu();
     if(option == 2){
         exit('0');
@@ -47,8 +46,6 @@ int main(void){
 
         while(1){
             drawField(mine_field);
-            printf("\n");
-            viewField(mine_field);
             printf("\n");
             validator = 0;
             while(validator == 0 || play < 1 || play > 3){
@@ -68,7 +65,11 @@ int main(void){
                 printf("Informe o eixo Y: ");  
                 axis_player_y = axis();
                 if(isBombs(mine_field,axis_player_x,axis_player_y) == 1){
-                    printf("Voce perdeu!!!");
+                    system("cls");
+                    viewBombs(mine_field);
+                    printf("\n");
+                    printf("Voce perdeu!!\n");
+                    break;
                     
                 }
                 if(isBombs(mine_field,axis_player_x,axis_player_y) == 0){
@@ -78,6 +79,7 @@ int main(void){
                 if(quantity_for_victory == 88){
                     system("cls");
                     printf("Parabens!!! Voce venceu o jogo.");
+                    break;
                 }
             }
             if(play == 2){
@@ -97,6 +99,8 @@ int main(void){
                 system("cls");
             }         
         } 
+        game = mainMenu();
+        system("cls");
     }
 
 }
@@ -105,40 +109,19 @@ int mainMenu(){
     int validator = 0;
     int option;
 
-    printf("\nBem-vindo ao jogo Field minado.\n");
     printf("Selecione uma opcao: \n");
     printf("[1] - Novo jogo.\n");
     printf("[2] - Sair do jogo.\n");
-    while(validator == 0){
+    while(validator == 0 || option < 1 || option > 2){
         validator = scanf("%d", &option);
         while(getchar() != '\n');
-        if(validator == 0){
+        if(validator == 0 || option < 1 || option > 2){
             printf("Por favor, digite um numero de uma opcao valida.\n");
         }
     }
     
     return option;
 }
-
-int auxiliaryMenu(){
-    int validator = 0;
-    int option_usuer;
-
-    printf("Selecione uma opcao: \n");
-    printf("[1] - Novo jogo.\n");
-    printf("[2] - Sair do jogo.\n");
-    printf("[3] - Voltar para o menu principal.\n");
-    while(validator == 0){
-        validator = scanf("%d", &option_usuer);
-        while(getchar() != '\n');
-        if(validator == 0){
-            printf("Por favor, digite um numero de uma opcao valida.\n");
-        }
-    }
-    
-    return option_usuer;
-}
-
 
 void drawField(Field mine_field[][10]){
     int i, j;
@@ -306,27 +289,38 @@ void removeFlag(Field (*mine_field)[10], int eixo_x, int eixo_y){
     mine_field[eixo_x][eixo_y].flag = 0;
 }
 
-
-/* auxiliary function */
-void viewField(Field mine_field[][10]){
+void viewBombs(Field mine_field[][10]){
     int i, j;
+    printf("   ");
+    for(i=0; i<10; i++){
+        printf("  %d ", i+1);
+    }
+    printf("\n");
+    printf("    ");
     for(i=0; i<20; i++){
         printf("--");
     }
     printf("\n");
     for(i=0; i<10; i++){
+        if(i+1 == 10){
+            printf(" %d ", i+1);
+        }
+        else{
+            printf(" %d  ", i+1);
+        }
         for(j=0; j<10; j++){
             printf("|");
                 if(mine_field[i][j].bomb == 1){
                     printf(" \033[1;31m*\033[0m ");
                 }
                 else{
-                    printf(" %d ", mine_field[i][j].danger);
+                    printf("   ");
                 }
         }
         printf("|");
         printf("\n");
     }
+    printf("    ");
     for(i=0; i<20; i++){
         printf("--");
     }
