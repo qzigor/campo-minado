@@ -60,9 +60,9 @@ int main(void){
                 }
             }
             if(play == 1){
-                printf("Informe o eixo X: ");  
+                printf("Informe a linha: ");  
                 axis_player_x = axis();
-                printf("Informe o eixo Y: ");  
+                printf("Informe a coluna: ");  
                 axis_player_y = axis();
                 if(isBombs(mine_field,axis_player_x,axis_player_y) == 1){
                     system("cls");
@@ -78,22 +78,22 @@ int main(void){
                 }
                 if(quantity_for_victory == 88){
                     system("cls");
-                    printf("Parabens!!! Voce venceu o jogo.");
+                    printf("Parabens!!! Voce venceu o jogo.\n");
                     break;
                 }
             }
             if(play == 2){
-                printf("Informe o eixo X: ");  
+                printf("Informe a linha: ");  
                 axis_player_x = axis();
-                printf("Informe o eixo Y: ");  
+                printf("Informe a coluna: ");  
                 axis_player_y = axis();
                 addFlag(mine_field, axis_player_x, axis_player_y);
                 system("cls");
             }
             if(play == 3){
-                printf("Informe o eixo X: ");  
+                printf("Informe a linha: ");  
                 axis_player_x = axis();
-                printf("Informe o eixo Y: ");  
+                printf("Informe a coluna: ");  
                 axis_player_y = axis();
                 removeFlag(mine_field, axis_player_x, axis_player_y);
                 system("cls");
@@ -145,7 +145,7 @@ void drawField(Field mine_field[][10]){
         for(j=0; j<10; j++){
             printf("|");
             if(mine_field[i][j].open == 0 && mine_field[i][j].flag == 1){
-                printf(" ! ");
+                printf(" \033[1;33m!\033[0m ");
             }
             if(mine_field[i][j].open == 0 && mine_field[i][j].flag == 0){
                 printf("   ");
