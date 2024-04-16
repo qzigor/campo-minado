@@ -1,4 +1,4 @@
-# Campo-minado em C
+# Campo minado em C
 Este é um projeto de Campo Minado desenvolvido em linguagem C como parte do projeto final da disciplina de computação 1 na UFRJ. O objetivo principal deste projeto foi aprimorar a lógica básica de programação estruturada e conhecer melhor a linguagem C.
 
 ## Como jogar
