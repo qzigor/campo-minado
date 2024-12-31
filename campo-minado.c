@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
-/*Nova chave SSH.*/
+
 typedef struct field{
     int open;
     int bomb;
