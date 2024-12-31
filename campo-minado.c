@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
-
+/*Testando*/
 typedef struct field{
     int open;
     int bomb;
