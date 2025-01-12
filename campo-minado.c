@@ -10,16 +10,17 @@ typedef struct field{
 } Field;
 
 int mainMenu();
-void drawField(Field mine_field[][10]);
-void startField(Field (*mine_field)[10]);
-void addBombs(Field (*mine_field)[10]);
-void addIndices(Field (*mine_field)[10]);
+void drawField(Field mine_field[10][10]);
+void startField(Field mine_field[10][10]);
+void addBombs(Field mine_field[10][10]);
+void addIndices(Field mine_field[10][10]);
 int axis();
-int isBombs(Field (*mine_field)[10], int eixo_x, int eixo_y);
-void openFields(Field (*mine_field)[10], int eixo_x, int eixo_y, int *vitoria);
-void addFlag(Field (*mine_field)[10], int eixo_x, int eixo_y);
-void removeFlag(Field (*mine_field)[10], int eixo_x, int eixo_y);
-void viewBombs(Field mine_field[][10]);
+int isBombs(Field mine_field[10][10], int eixo_x, int eixo_y);
+void openFields(Field mine_field[10][10], int eixo_x, int eixo_y);
+void addFlag(Field mine_field[10][10], int eixo_x, int eixo_y);
+void removeFlag(Field mine_field[10][10], int eixo_x, int eixo_y);
+void viewBombs(Field mine_field[10][10]);
+int isVictory(Field mine_field[10][10]);
 
 
 int main(void){
@@ -28,7 +29,7 @@ int main(void){
     int option;
     int axis_player_x = -1, axis_player_y = -1;
     int validator;
-    int quantity_for_victory = 0;
+    int victory = 0;
     int game = 1;
     int play = 0;
 
@@ -38,7 +39,7 @@ int main(void){
         exit('0');
     }
 
-    system("cls");
+    system("clear");
     while(game == 1){
         startField(mine_field);
         addBombs(mine_field);
@@ -65,7 +66,7 @@ int main(void){
                 printf("Informe a coluna: ");  
                 axis_player_y = axis();
                 if(isBombs(mine_field,axis_player_x,axis_player_y) == 1){
-                    system("cls");
+                    system("clear");
                     viewBombs(mine_field);
                     printf("\n");
                     printf("Voce perdeu!!\n");
@@ -73,11 +74,11 @@ int main(void){
                     
                 }
                 if(isBombs(mine_field,axis_player_x,axis_player_y) == 0){
-                    openFields(mine_field, axis_player_x, axis_player_y, &quantity_for_victory);
-                    system("cls");
+                    openFields(mine_field, axis_player_x, axis_player_y);
+                    system("clear");
                 }
-                if(quantity_for_victory == 88){
-                    system("cls");
+                victory = isVictory(mine_field);
+                if(victory == 90){
                     printf("Parabens!!! Voce venceu o jogo.\n");
                     break;
                 }
@@ -88,7 +89,7 @@ int main(void){
                 printf("Informe a coluna: ");  
                 axis_player_y = axis();
                 addFlag(mine_field, axis_player_x, axis_player_y);
-                system("cls");
+                system("clear");
             }
             if(play == 3){
                 printf("Informe a linha: ");  
@@ -96,11 +97,11 @@ int main(void){
                 printf("Informe a coluna: ");  
                 axis_player_y = axis();
                 removeFlag(mine_field, axis_player_x, axis_player_y);
-                system("cls");
+                system("clear");
             }         
         } 
         game = mainMenu();
-        system("cls");
+        system("clear");
     }
 
 }
@@ -123,7 +124,7 @@ int mainMenu(){
     return option;
 }
 
-void drawField(Field mine_field[][10]){
+void drawField(Field mine_field[10][10]){
     int i, j;
     printf("   ");
     for(i=0; i<10; i++){
@@ -163,7 +164,7 @@ void drawField(Field mine_field[][10]){
     }
 }
 
-void startField(Field (*mine_field)[10]){
+void startField(Field mine_field[10][10]){
     int i, j;
     for(i=0; i<10; i++){
             for(j=0; j<10; j++){
@@ -175,11 +176,11 @@ void startField(Field (*mine_field)[10]){
         }
 }
 
-void addBombs(Field (*mine_field)[10]){
+void addBombs(Field mine_field[10][10]){
     int axis_bomb_x, axis_bomb_y;
     int quantity_bomb = 0;
     srand(time(NULL));
-    while(quantity_bomb < 12){
+    while(quantity_bomb < 10){
         axis_bomb_x = rand() % 10;
         axis_bomb_y = rand() % 10;
         if(mine_field[axis_bomb_x][axis_bomb_y].bomb == 0){
@@ -189,7 +190,7 @@ void addBombs(Field (*mine_field)[10]){
     }
 }
 
-void addIndices(Field (*mine_field)[10]){
+void addIndices(Field mine_field[10][10]){
     int i, j;
     for(i=0; i<10; i++){
         for(j=0; j<10; j++){
@@ -237,7 +238,7 @@ int axis(){
     return axis_player;
 }
 
-int isBombs(Field (*mine_field)[10], int eixo_x, int eixo_y){
+int isBombs(Field mine_field[10][10], int eixo_x, int eixo_y){
     if(mine_field[eixo_x][eixo_y].bomb == 1){
         return 1;
     }
@@ -246,50 +247,49 @@ int isBombs(Field (*mine_field)[10], int eixo_x, int eixo_y){
     }
 }
 
-void openFields(Field (*mine_field)[10], int eixo_x, int eixo_y, int *vitoria){
-    *vitoria = *vitoria + 1;
+void openFields(Field mine_field[10][10], int eixo_x, int eixo_y){
     mine_field[eixo_x][eixo_y].open = 1;
     if(mine_field[eixo_x][eixo_y].danger != 0){
         return;
     }
     else{
         if(eixo_x+1 <= 9 && mine_field[eixo_x+1][eixo_y].open == 0){
-            openFields(mine_field, eixo_x+1, eixo_y, vitoria);
+            openFields(mine_field, eixo_x+1, eixo_y);
         }
         if(eixo_x-1 >= 0 && mine_field[eixo_x-1][eixo_y].open == 0){
-            openFields(mine_field, eixo_x-1, eixo_y, vitoria);
+            openFields(mine_field, eixo_x-1, eixo_y);
         }
         if(eixo_y+1 <= 9 && mine_field[eixo_x][eixo_y+1].open == 0){
-            openFields(mine_field, eixo_x, eixo_y+1, vitoria);
+            openFields(mine_field, eixo_x, eixo_y+1);
         }
         if(eixo_y-1 >= 0 && mine_field[eixo_x][eixo_y-1].open == 0){
-            openFields(mine_field, eixo_x, eixo_y-1, vitoria);
+            openFields(mine_field, eixo_x, eixo_y-1);
         }
         if(eixo_x-1 >= 0 && eixo_y-1 >= 0 && mine_field[eixo_x-1][eixo_y-1].open == 0){
-            openFields(mine_field, eixo_x-1, eixo_y-1, vitoria);
+            openFields(mine_field, eixo_x-1, eixo_y-1);
         }
         if(eixo_x-1 >= 0 && eixo_y+1 <= 9 && mine_field[eixo_x-1][eixo_y+1].open == 0){
-            openFields(mine_field, eixo_x-1, eixo_y+1, vitoria);
+            openFields(mine_field, eixo_x-1, eixo_y+1);
         }
         if(eixo_x+1 <= 9 && eixo_y-1 >= 0 && mine_field[eixo_x+1][eixo_y-1].open == 0){
-            openFields(mine_field, eixo_x+1, eixo_y-1, vitoria);
+            openFields(mine_field, eixo_x+1, eixo_y-1);
         }
         if(eixo_x+1 <= 9 && eixo_y+1 <= 9 && mine_field[eixo_x+1][eixo_y+1].open == 0){
-            openFields(mine_field, eixo_x+1, eixo_y+1, vitoria);
+            openFields(mine_field, eixo_x+1, eixo_y+1);
         }
     }
 
 }
 
-void addFlag(Field (*mine_field)[10], int eixo_x, int eixo_y){
+void addFlag(Field mine_field[10][10], int eixo_x, int eixo_y){
     mine_field[eixo_x][eixo_y].flag = 1;
 }
 
-void removeFlag(Field (*mine_field)[10], int eixo_x, int eixo_y){
+void removeFlag(Field mine_field[10][10], int eixo_x, int eixo_y){
     mine_field[eixo_x][eixo_y].flag = 0;
 }
 
-void viewBombs(Field mine_field[][10]){
+void viewBombs(Field mine_field[10][10]){
     int i, j;
     printf("   ");
     for(i=0; i<10; i++){
@@ -324,4 +324,17 @@ void viewBombs(Field mine_field[][10]){
     for(i=0; i<20; i++){
         printf("--");
     }
+}
+
+int isVictory(Field mine_field[10][10]){
+    int i, j;
+    int victory = 0;
+    for(i=0; i<10; i++){
+        for(j=0; j<10; j++){
+            if(mine_field[i][j].open == 1){
+                victory++;
+            }
+        }
+    }
+    return victory;
 }
